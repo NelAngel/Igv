@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Calculadora IGV Perú</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #e8eef4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 550px;
+      width: 100%;
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      background: #1a3a5c;
+      color: white;
+      padding: 20px 24px;
+    }
+
+    .header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-top: 14px;
+    }
+
+    .tab {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      padding: 8px 24px;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tab.activo {
+      background: #d91023;
+      color: white;
+    }
+
+    /* Cuerpo */
+    .cuerpo {
+      padding: 28px 24px;
+    }
+
+    /* Campos de entrada */
+    .campo {
+      margin-bottom: 28px;
+    }
+
+    .campo label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a3a5c;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .campo input {
+      width: 100%;
+      padding: 16px 18px;
+      font-size: 24px;
+      font-weight: 700;
+      border: 2px solid #dce3ec;
+      border-radius: 20px;
+      text-align: right;
+      background: #fefefe;
+      font-family: monospace;
+      transition: 0.2s;
+    }
+
+    .campo input:focus {
+      outline: none;
+      border-color: #d91023;
+      box-shadow: 0 0 0 3px rgba(217,16,35,0.1);
+    }
+
+    /* Tarjeta de resultados IGV */
+    .resultado-item {
+      background: #f5f7fb;
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .resultado-label {
+      font-weight: 600;
+      color: #4a627a;
+      font-size: 14px;
+    }
+
+    .resultado-valor {
+      font-weight: 800;
+      font-size: 22px;
+      color: #1a3a5c;
+    }
+
+    .igv-rojo .resultado-valor {
+      color: #d91023;
+    }
+
+    /* SON en letras */
+    .son-letras {
+      background: #f0f3f8;
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin: 20px 0 16px;
+      border-left: 5px solid #d91023;
+    }
+
+    .son-letras-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6c7e97;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .son-letras-texto {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a3a5c;
+      word-wrap: break-word;
+      line-height: 1.4;
+    }
+
+    /* Fecha */
+    .fecha {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #6c7e97;
+    }
+
+    .fecha-valor {
+      font-weight: 600;
+      color: #1a3a5c;
+    }
+
+    button {
+      background: none;
+      border: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .cuerpo {
+        padding: 20px;
+      }
+      .resultado-valor {
+        font-size: 18px;
+      }
+      .campo input {
+        font-size: 20px;
+        padding: 12px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>CALCULADORA IGV PERÚ</h1>
+    <div class="tabs">
+      <button class="tab" id="tabAvanzado">Avanzado</button>
+      <button class="tab activo" id="tabBasico">Básico</button>
+    </div>
+  </div>
+
+  <div class="cuerpo">
+    <!-- Campo Monto Base -->
+    <div class="campo">
+      <label>💰 MONTO BASE</label>
+      <input type="number" id="montoBase" value="17000.00" step="any">
+    </div>
+
+    <!-- Campo IGV (solo lectura pero se muestra) -->
+    <div class="resultado-item igv-rojo">
+      <span class="resultado-label">📊 IGV 18%</span>
+      <span class="resultado-valor" id="igvValor">S/ 0.00</span>
+    </div>
+
+    <!-- Campo Total -->
+    <div class="campo">
+      <label>🏷️ TOTAL</label>
+      <input type="number" id="total" value="20060.00" step="any">
+    </div>
+
+    <!-- SON: monto en letras -->
+    <div class="son-letras">
+      <div class="son-letras-label">SON :</div>
+      <div class="son-letras-texto" id="montoLetras">VEINTE MIL SESENTA CON 00/100 SOLES</div>
+    </div>
+
+    <!-- Fecha del sistema -->
+    <div class="fecha">
+      <span>📅 FECHA DEL SISTEMA :</span>
+      <span class="fecha-valor" id="fechaTexto">22 de Mayo del 2026</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // IGV fijo 18%
+  const IGV_PORCENTAJE = 0.18;
+
+  // Elementos DOM
+  const montoBaseInput = document.getElementById('montoBase');
+  const totalInput = document.getElementById('total');
+  const igvSpan = document.getElementById('igvValor');
+  const montoLetrasSpan = document.getElementById('montoLetras');
+
+  // --- Función para convertir número a letras (español) hasta millones ---
+  function numeroALetras(num) {
+    // Redondeamos a 2 decimales y separamos parte entera y decimal
+    let numRedondeado = Math.round(num * 100) / 100;
+    let partes = numRedondeado.toFixed(2).split('.');
+    let enteros = parseInt(partes[0]);
+    let decimales = partes[1];
+
+    if (isNaN(enteros)) enteros = 0;
+
+    const unidades = ['', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE'];
+    const especiales = ['DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISÉIS', 'DIECISIETE', 'DIECIOCHO', 'DIECINUEVE'];
+    const decenas = ['', '', 'VEINTI', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
+    const centenas = ['', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS', 'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'];
+
+    function convertirTresDigitos(n) {
+      if (n === 0) return '';
+      if (n === 100) return 'CIEN';
+      let centena = Math.floor(n / 100);
+      let resto = n % 100;
+      let resultado = '';
+      if (centena > 0) {
+        resultado += centenas[centena] + ' ';
+      }
+      if (resto >= 1 && resto <= 9) {
+        resultado += unidades[resto];
+      } else if (resto >= 10 && resto <= 19) {
+        resultado += especiales[resto - 10];
+      } else if (resto >= 20) {
+        let dec = Math.floor(resto / 10);
+        let uni = resto % 10;
+        if (uni === 0) {
+          resultado += decenas[dec];
+        } else {
+          if (dec === 2) {
+            resultado += 'VEINTI' + unidades[uni];
+          } else {
+            resultado += decenas[dec] + ' Y ' + unidades[uni];
+          }
+        }
+      }
+      return resultado.trim();
+    }
+
+    function convertirMiles(n) {
+      if (n === 0) return '';
+      let miles = Math.floor(n / 1000);
+      let resto = n % 1000;
+      let resultado = '';
+      if (miles === 1) {
+        resultado += 'MIL ';
+      } else if (miles > 1) {
+        resultado += convertirTresDigitos(miles) + ' MIL ';
+      }
+      if (resto > 0) {
+        resultado += convertirTresDigitos(resto);
+      }
+      return resultado.trim();
+    }
+
+    function convertirMillones(n) {
+      if (n === 0) return '';
+      let millones = Math.floor(n / 1000000);
+      let resto = n % 1000000;
+      let resultado = '';
+      if (millones === 1) {
+        resultado += 'UN MILLÓN ';
+      } else if (millones > 1) {
+        resultado += convertirTresDigitos(millones) + ' MILLONES ';
+      }
+      if (resto > 0) {
+        resultado += convertirMiles(resto);
+      }
+      return resultado.trim();
+    }
+
+    let letrasEnteros = '';
+    if (enteros === 0) {
+      letrasEnteros = 'CERO';
+    } else if (enteros >= 1000000) {
+      letrasEnteros = convertirMillones(enteros);
+    } else if (enteros >= 1000) {
+      letrasEnteros = convertirMiles(enteros);
+    } else {
+      letrasEnteros = convertirTresDigitos(enteros);
+    }
+
+    // Ajuste para "CIENTO" cuando es justo 100 pero parte de miles ya se maneja
+    if (letrasEnteros === 'CIENTO' && enteros === 100) letrasEnteros = 'CIEN';
+    
+    return `${letrasEnteros} CON ${decimales}/100 SOLES`;
+  }
+
+  // Formatear a Soles
+  function formatoSoles(valor) {
+    return 'S/ ' + valor.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  // Actualizar desde Monto Base
+  function actualizarDesdeBase() {
+    let base = parseFloat(montoBaseInput.value);
+    if (isNaN(base)) base = 0;
+    if (base < 0) base = 0;
+    
+    let igv = base * IGV_PORCENTAJE;
+    let total = base + igv;
+    
+    igvSpan.textContent = formatoSoles(igv);
+    totalInput.value = total.toFixed(2);
+    
+    let montoEnLetras = numeroALetras(total);
+    montoLetrasSpan.textContent = montoEnLetras;
+  }
+
+  // Actualizar desde Total
+  function actualizarDesdeTotal() {
+    let total = parseFloat(totalInput.value);
+    if (isNaN(total)) total = 0;
+    if (total < 0) total = 0;
+    
+    let base = total / (1 + IGV_PORCENTAJE);
+    let igv = total - base;
+    
+    montoBaseInput.value = base.toFixed(2);
+    igvSpan.textContent = formatoSoles(igv);
+    
+    let montoEnLetras = numeroALetras(total);
+    montoLetrasSpan.textContent = montoEnLetras;
+  }
+
+  // --- Eventos ---
+  let actualizando = false;
+
+  function onBaseChange() {
+    if (actualizando) return;
+    actualizando = true;
+    actualizarDesdeBase();
+    actualizando = false;
+  }
+
+  function onTotalChange() {
+    if (actualizando) return;
+    actualizando = true;
+    actualizarDesdeTotal();
+    actualizando = false;
+  }
+
+  // Formatear inputs al perder foco (2 decimales)
+  function formatearBase() {
+    let val = parseFloat(montoBaseInput.value);
+    if (isNaN(val)) val = 0;
+    montoBaseInput.value = val.toFixed(2);
+    actualizarDesdeBase();
+  }
+
+  function formatearTotal() {
+    let val = parseFloat(totalInput.value);
+    if (isNaN(val)) val = 0;
+    totalInput.value = val.toFixed(2);
+    actualizarDesdeTotal();
+  }
+
+  // Fecha del sistema
+  function actualizarFecha() {
+    const ahora = new Date();
+    const dias = ahora.getDate();
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const mes = meses[ahora.getMonth()];
+    const año = ahora.getFullYear();
+    document.getElementById('fechaTexto').textContent = `${dias} de ${mes} del ${año}`;
+  }
+
+  // Pestañas (solo efecto visual, mantiene la misma lógica)
+  const tabAvanzado = document.getElementById('tabAvanzado');
+  const tabBasico = document.getElementById('tabBasico');
+  
+  tabAvanzado.addEventListener('click', () => {
+    tabAvanzado.classList.add('activo');
+    tabBasico.classList.remove('activo');
+  });
+  
+  tabBasico.addEventListener('click', () => {
+    tabBasico.classList.add('activo');
+    tabAvanzado.classList.remove('activo');
+  });
+
+  // Asignar eventos
+  montoBaseInput.addEventListener('input', onBaseChange);
+  montoBaseInput.addEventListener('blur', formatearBase);
+  totalInput.addEventListener('input', onTotalChange);
+  totalInput.addEventListener('blur', formatearTotal);
+
+  // Inicializar valores como en la imagen
+  montoBaseInput.value = '17000.00';
+  totalInput.value = '20060.00';
+  actualizarDesdeBase();  // calcula IGV y letras
+  actualizarFecha();
+</script>
+</body>
+</html>
