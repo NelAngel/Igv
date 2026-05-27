@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Calculadora IGV Perú</title>
+  <title>Calculadora IGV Perú | Estilo Cuadrado</title>
   <style>
     * {
       margin: 0;
@@ -12,9 +12,9 @@
     }
 
     body {
-      background: #e8eef4;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 20px;
+      background: #e2e8f0;
+      font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, 'Roboto', sans-serif;
+      padding: 24px 16px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -22,174 +22,302 @@
     }
 
     .container {
-      max-width: 550px;
+      max-width: 860px;
       width: 100%;
       background: white;
-      border-radius: 28px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+      border-radius: 0px;
       overflow: hidden;
     }
 
-    /* Header */
     .header {
-      background: #1a3a5c;
-      color: white;
-      padding: 20px 24px;
+      background: #0f2c3d;
+      padding: 22px 28px 14px 28px;
+      border-bottom: 2px solid #d93c3f;
     }
 
     .header h1 {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: white;
+      margin-bottom: 18px;
     }
 
     .tabs {
       display: flex;
-      gap: 4px;
-      margin-top: 14px;
+      gap: 0px;
     }
 
     .tab {
-      background: rgba(255,255,255,0.2);
+      background: #1e4a6e;
       border: none;
-      padding: 8px 24px;
-      border-radius: 40px;
-      color: white;
-      font-weight: 600;
-      font-size: 14px;
+      padding: 10px 32px;
+      color: #f0f4fa;
+      font-weight: 700;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.1s linear;
+      margin-right: 2px;
+      border-radius: 0px;
     }
 
     .tab.activo {
-      background: #d91023;
+      background: #d93c3f;
       color: white;
+      border-bottom: 2px solid white;
     }
 
-    /* Cuerpo */
     .cuerpo {
-      padding: 28px 24px;
+      padding: 28px 28px 32px;
+      background: #ffffff;
     }
 
-    /* Campos de entrada */
-    .campo {
+    .campo-grupo {
       margin-bottom: 28px;
     }
 
-    .campo label {
+    .campo-grupo label {
       display: block;
-      font-size: 14px;
-      font-weight: 600;
-      color: #1a3a5c;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #3a546d;
       margin-bottom: 8px;
-      letter-spacing: 0.5px;
     }
 
-    .campo input {
+    .input-grande {
       width: 100%;
-      padding: 16px 18px;
-      font-size: 24px;
+      padding: 14px 16px;
+      font-size: 1.7rem;
       font-weight: 700;
-      border: 2px solid #dce3ec;
-      border-radius: 20px;
-      text-align: right;
+      font-family: 'Courier New', 'SF Mono', monospace;
+      border: 2px solid #cbd5e1;
       background: #fefefe;
-      font-family: monospace;
-      transition: 0.2s;
+      text-align: right;
+      transition: 0.1s;
+      color: #0f2c3d;
+      border-radius: 0px;
     }
 
-    .campo input:focus {
+    .input-grande:focus {
       outline: none;
-      border-color: #d91023;
-      box-shadow: 0 0 0 3px rgba(217,16,35,0.1);
+      border-color: #d93c3f;
     }
 
-    /* Tarjeta de resultados IGV */
-    .resultado-item {
-      background: #f5f7fb;
-      border-radius: 20px;
+    .tarjeta-resultado {
+      background: #f4f7fc;
       padding: 16px 20px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
+      border: 1px solid #e2e8f0;
+      border-radius: 0px;
     }
 
-    .resultado-label {
-      font-weight: 600;
-      color: #4a627a;
-      font-size: 14px;
+    .tarjeta-label {
+      font-weight: 700;
+      color: #2c4c6e;
+      font-size: 0.85rem;
     }
 
-    .resultado-valor {
+    .tarjeta-valor {
       font-weight: 800;
-      font-size: 22px;
-      color: #1a3a5c;
+      font-size: 1.5rem;
+      color: #0f2c3d;
     }
 
-    .igv-rojo .resultado-valor {
-      color: #d91023;
+    .igv-destacado .tarjeta-valor {
+      color: #d93c3f;
     }
 
-    /* SON en letras */
-    .son-letras {
-      background: #f0f3f8;
-      border-radius: 20px;
+    .bloque-letras {
+      background: #f1f4f9;
       padding: 16px 20px;
-      margin: 20px 0 16px;
-      border-left: 5px solid #d91023;
+      margin: 24px 0 18px;
+      border-left: 5px solid #d93c3f;
+      border-radius: 0px;
     }
 
-    .son-letras-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #6c7e97;
+    .letras-etiqueta {
+      font-size: 0.7rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      color: #5b7290;
+      letter-spacing: 0.8px;
       margin-bottom: 6px;
     }
 
-    .son-letras-texto {
-      font-size: 16px;
+    .letras-texto {
+      font-size: 1rem;
       font-weight: 700;
-      color: #1a3a5c;
-      word-wrap: break-word;
-      line-height: 1.4;
+      color: #122c3c;
+      word-break: break-word;
     }
 
-    /* Fecha */
-    .fecha {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid #e2e8f0;
+    .fecha-linea {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: #6c7e97;
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 2px solid #e2e8f0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #5c6f8c;
     }
 
     .fecha-valor {
-      font-weight: 600;
-      color: #1a3a5c;
+      font-weight: 800;
+      color: #1e3a5f;
     }
 
-    button {
-      background: none;
+    /* PANEL AVANZADO */
+    .panel-avanzado {
+      margin-top: 8px;
+    }
+
+    .cabecera-productos {
+      display: grid;
+      grid-template-columns: 2fr 0.8fr 1fr 1.2fr 0.5fr;
+      gap: 12px;
+      background: #e9eff6;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      font-weight: 800;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #1f4662;
+      letter-spacing: 0.4px;
+      border: 1px solid #dce3ec;
+      border-radius: 0px;
+    }
+
+    .producto-fila {
+      display: grid;
+      grid-template-columns: 2fr 0.8fr 1fr 1.2fr 0.5fr;
+      gap: 12px;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 10px 16px;
+      margin-bottom: 10px;
+      border-radius: 0px;
+    }
+
+    .producto-fila input {
+      width: 100%;
+      padding: 10px 10px;
+      border: 1px solid #cbd5e6;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: right;
+      background: white;
+      border-radius: 0px;
+    }
+
+    .producto-fila input.desc-input {
+      text-align: left;
+    }
+
+    .subtotal-text {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #0f3b4f;
+      text-align: right;
+      padding-right: 6px;
+    }
+
+    .btn-icono {
+      background: #f0f2f7;
+      border: 1px solid #cdd9ed;
+      width: 34px;
+      height: 34px;
+      font-weight: bold;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      border-radius: 0px;
+    }
+
+    .btn-eliminar {
+      background: #fce9eb;
+      color: #bd2f32;
+      border-color: #e2c9cc;
+    }
+
+    .btn-eliminar:hover {
+      background: #f5d2d6;
+    }
+
+    .btn-agregar {
+      background: #1b4d6e;
+      color: white;
+      padding: 8px 24px;
+      font-weight: 700;
+      width: auto;
+      border-radius: 0px;
       border: none;
     }
 
-    /* Responsive */
-    @media (max-width: 480px) {
+    .check-igv-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f4f7fc;
+      padding: 12px 18px;
+      margin: 20px 0 20px;
+      border: 1px solid #e2e8f0;
+      border-radius: 0px;
+    }
+
+    .check-igv-line label {
+      font-weight: 700;
+      font-size: 0.8rem;
+      color: #1c4d6b;
+    }
+
+    .resumen-tarjetas-avanzado {
+      background: #fafcff;
+      border: 1px solid #e6edf5;
+      padding: 18px;
+      margin: 20px 0 16px;
+      border-radius: 0px;
+    }
+
+    .resumen-linea {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .resumen-total {
+      border-top: 2px solid #dce3ec;
+      margin-top: 10px;
+      padding-top: 12px;
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+    @media (max-width: 680px) {
+      .cabecera-productos, .producto-fila {
+        grid-template-columns: 1.5fr 0.7fr 0.9fr 1fr 0.4fr;
+        gap: 8px;
+      }
+      .input-grande {
+        font-size: 1.3rem;
+        padding: 12px;
+      }
+      .tarjeta-valor {
+        font-size: 1.2rem;
+      }
       .cuerpo {
         padding: 20px;
-      }
-      .resultado-valor {
-        font-size: 18px;
-      }
-      .campo input {
-        font-size: 20px;
-        padding: 12px 16px;
       }
     }
   </style>
@@ -197,98 +325,50 @@
 <body>
 <div class="container">
   <div class="header">
-    <h1>CALCULADORA IGV PERÚ -NelAngel</h1>
+    <h1>CALCULADORA IGV PERÚ</h1>
     <div class="tabs">
       <button class="tab" id="tabAvanzado">Avanzado</button>
       <button class="tab activo" id="tabBasico">Básico</button>
     </div>
   </div>
 
-  <div class="cuerpo">
-    <!-- Campo Monto Base -->
-    <div class="campo">
-      <label>💰 MONTO BASE</label>
-      <input type="number" id="montoBase" value="17000.00" step="any">
-    </div>
-
-    <!-- Campo IGV (solo lectura pero se muestra) -->
-    <div class="resultado-item igv-rojo">
-      <span class="resultado-label">📊 IGV 18%</span>
-      <span class="resultado-valor" id="igvValor">S/ 0.00</span>
-    </div>
-
-    <!-- Campo Total -->
-    <div class="campo">
-      <label>🏷️ TOTAL</label>
-      <input type="number" id="total" value="20060.00" step="any">
-    </div>
-
-    <!-- SON: monto en letras -->
-    <div class="son-letras">
-      <div class="son-letras-label">SON :</div>
-      <div class="son-letras-texto" id="montoLetras">VEINTE MIL SESENTA CON 00/100 SOLES</div>
-    </div>
-
-    <!-- Fecha del sistema -->
-    <div class="fecha">
-      <span>📅 FECHA DEL SISTEMA :</span>
-      <span class="fecha-valor" id="fechaTexto">22 de Mayo del 2026</span>
-    </div>
-  </div>
+  <div class="cuerpo" id="contenidoDinamico"></div>
 </div>
 
 <script>
-  // IGV fijo 18%
-  const IGV_PORCENTAJE = 0.18;
-
-  // Elementos DOM
-  const montoBaseInput = document.getElementById('montoBase');
-  const totalInput = document.getElementById('total');
-  const igvSpan = document.getElementById('igvValor');
-  const montoLetrasSpan = document.getElementById('montoLetras');
-
-  // --- Función para convertir número a letras (español) hasta millones ---
+  const IGV = 0.18;
+  
+  // Conversión a letras
   function numeroALetras(num) {
-    // Redondeamos a 2 decimales y separamos parte entera y decimal
-    let numRedondeado = Math.round(num * 100) / 100;
-    let partes = numRedondeado.toFixed(2).split('.');
-    let enteros = parseInt(partes[0]);
-    let decimales = partes[1];
-
+    if (isNaN(num)) num = 0;
+    let rounded = Math.round(num * 100) / 100;
+    let parts = rounded.toFixed(2).split('.');
+    let enteros = parseInt(parts[0], 10);
+    let decimales = parts[1];
     if (isNaN(enteros)) enteros = 0;
 
     const unidades = ['', 'UN', 'DOS', 'TRES', 'CUATRO', 'CINCO', 'SEIS', 'SIETE', 'OCHO', 'NUEVE'];
     const especiales = ['DIEZ', 'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE', 'DIECISÉIS', 'DIECISIETE', 'DIECIOCHO', 'DIECINUEVE'];
-    const decenas = ['', '', 'VEINTI', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
+    const decenas = ['', '', 'VEINTE', 'TREINTA', 'CUARENTA', 'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'];
     const centenas = ['', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS', 'CUATROCIENTOS', 'QUINIENTOS', 'SEISCIENTOS', 'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'];
 
     function convertirTresDigitos(n) {
       if (n === 0) return '';
       if (n === 100) return 'CIEN';
-      let centena = Math.floor(n / 100);
+      let c = Math.floor(n / 100);
       let resto = n % 100;
-      let resultado = '';
-      if (centena > 0) {
-        resultado += centenas[centena] + ' ';
+      let res = '';
+      if (c > 0) res += centenas[c] + ' ';
+      if (resto >= 1 && resto <= 9) res += unidades[resto];
+      else if (resto >= 10 && resto <= 19) res += especiales[resto - 10];
+      else if (resto >= 20) {
+        let d = Math.floor(resto / 10);
+        let u = resto % 10;
+        if (u === 0) res += decenas[d];
+        else if (d === 2) res += 'VEINTI' + unidades[u];
+        else res += decenas[d] + ' Y ' + unidades[u];
       }
-      if (resto >= 1 && resto <= 9) {
-        resultado += unidades[resto];
-      } else if (resto >= 10 && resto <= 19) {
-        resultado += especiales[resto - 10];
-      } else if (resto >= 20) {
-        let dec = Math.floor(resto / 10);
-        let uni = resto % 10;
-        if (uni === 0) {
-          resultado += decenas[dec];
-        } else {
-          if (dec === 2) {
-            resultado += 'VEINTI' + unidades[uni];
-          } else {
-            resultado += decenas[dec] + ' Y ' + unidades[uni];
-          }
-        }
-      }
-      return resultado.trim();
+      return res.trim();
     }
 
     function convertirMiles(n) {
@@ -296,14 +376,9 @@
       let miles = Math.floor(n / 1000);
       let resto = n % 1000;
       let resultado = '';
-      if (miles === 1) {
-        resultado += 'MIL ';
-      } else if (miles > 1) {
-        resultado += convertirTresDigitos(miles) + ' MIL ';
-      }
-      if (resto > 0) {
-        resultado += convertirTresDigitos(resto);
-      }
+      if (miles === 1) resultado += 'MIL ';
+      else if (miles > 1) resultado += convertirTresDigitos(miles) + ' MIL ';
+      if (resto > 0) resultado += convertirTresDigitos(resto);
       return resultado.trim();
     }
 
@@ -312,138 +387,329 @@
       let millones = Math.floor(n / 1000000);
       let resto = n % 1000000;
       let resultado = '';
-      if (millones === 1) {
-        resultado += 'UN MILLÓN ';
-      } else if (millones > 1) {
-        resultado += convertirTresDigitos(millones) + ' MILLONES ';
-      }
-      if (resto > 0) {
-        resultado += convertirMiles(resto);
-      }
+      if (millones === 1) resultado += 'UN MILLÓN ';
+      else if (millones > 1) resultado += convertirTresDigitos(millones) + ' MILLONES ';
+      if (resto > 0) resultado += convertirMiles(resto);
       return resultado.trim();
     }
 
     let letrasEnteros = '';
-    if (enteros === 0) {
-      letrasEnteros = 'CERO';
-    } else if (enteros >= 1000000) {
-      letrasEnteros = convertirMillones(enteros);
-    } else if (enteros >= 1000) {
-      letrasEnteros = convertirMiles(enteros);
-    } else {
-      letrasEnteros = convertirTresDigitos(enteros);
-    }
-
-    // Ajuste para "CIENTO" cuando es justo 100 pero parte de miles ya se maneja
+    if (enteros === 0) letrasEnteros = 'CERO';
+    else if (enteros >= 1000000) letrasEnteros = convertirMillones(enteros);
+    else if (enteros >= 1000) letrasEnteros = convertirMiles(enteros);
+    else letrasEnteros = convertirTresDigitos(enteros);
     if (letrasEnteros === 'CIENTO' && enteros === 100) letrasEnteros = 'CIEN';
-    
     return `${letrasEnteros} CON ${decimales}/100 SOLES`;
   }
 
-  // Formatear a Soles
-  function formatoSoles(valor) {
-    return 'S/ ' + valor.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function formatSoles(val) {
+    if (isNaN(val) || val === null) return 'S/ 0.00';
+    return 'S/ ' + val.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  // Actualizar desde Monto Base
-  function actualizarDesdeBase() {
-    let base = parseFloat(montoBaseInput.value);
-    if (isNaN(base)) base = 0;
-    if (base < 0) base = 0;
-    
-    let igv = base * IGV_PORCENTAJE;
-    let total = base + igv;
-    
-    igvSpan.textContent = formatoSoles(igv);
-    totalInput.value = total.toFixed(2);
-    
-    let montoEnLetras = numeroALetras(total);
-    montoLetrasSpan.textContent = montoEnLetras;
-  }
-
-  // Actualizar desde Total
-  function actualizarDesdeTotal() {
-    let total = parseFloat(totalInput.value);
-    if (isNaN(total)) total = 0;
-    if (total < 0) total = 0;
-    
-    let base = total / (1 + IGV_PORCENTAJE);
-    let igv = total - base;
-    
-    montoBaseInput.value = base.toFixed(2);
-    igvSpan.textContent = formatoSoles(igv);
-    
-    let montoEnLetras = numeroALetras(total);
-    montoLetrasSpan.textContent = montoEnLetras;
-  }
-
-  // --- Eventos ---
-  let actualizando = false;
-
-  function onBaseChange() {
-    if (actualizando) return;
-    actualizando = true;
-    actualizarDesdeBase();
-    actualizando = false;
-  }
-
-  function onTotalChange() {
-    if (actualizando) return;
-    actualizando = true;
-    actualizarDesdeTotal();
-    actualizando = false;
-  }
-
-  // Formatear inputs al perder foco (2 decimales)
-  function formatearBase() {
-    let val = parseFloat(montoBaseInput.value);
-    if (isNaN(val)) val = 0;
-    montoBaseInput.value = val.toFixed(2);
-    actualizarDesdeBase();
-  }
-
-  function formatearTotal() {
-    let val = parseFloat(totalInput.value);
-    if (isNaN(val)) val = 0;
-    totalInput.value = val.toFixed(2);
-    actualizarDesdeTotal();
-  }
-
-  // Fecha del sistema
-  function actualizarFecha() {
+  function getFechaString() {
     const ahora = new Date();
     const dias = ahora.getDate();
     const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const mes = meses[ahora.getMonth()];
-    const año = ahora.getFullYear();
-    document.getElementById('fechaTexto').textContent = `${dias} de ${mes} del ${año}`;
+    return `${dias} de ${meses[ahora.getMonth()]} del ${ahora.getFullYear()}`;
   }
 
-  // Pestañas (solo efecto visual, mantiene la misma lógica)
-  const tabAvanzado = document.getElementById('tabAvanzado');
-  const tabBasico = document.getElementById('tabBasico');
-  
-  tabAvanzado.addEventListener('click', () => {
-    tabAvanzado.classList.add('activo');
-    tabBasico.classList.remove('activo');
+  // ======================= PESTAÑA BÁSICA =======================
+  function renderBasico() {
+    const html = `
+      <div class="campo-grupo">
+        <label>💰 MONTO NETO (base)</label>
+        <input type="number" id="montoBaseInput" class="input-grande" value="0.00" step="any">
+      </div>
+      <div class="tarjeta-resultado igv-destacado">
+        <span class="tarjeta-label">📊 IGV 18%</span>
+        <span class="tarjeta-valor" id="igvMontoBasico">S/ 0.00</span>
+      </div>
+      <div class="campo-grupo">
+        <label>🏷️ TOTAL (con IGV)</label>
+        <input type="number" id="totalInputBasico" class="input-grande" value="0.00" step="any">
+      </div>
+      <div class="bloque-letras">
+        <div class="letras-etiqueta">SON :</div>
+        <div class="letras-texto" id="letrasBasico">CERO CON 00/100 SOLES</div>
+      </div>
+      <div class="fecha-linea">
+        <span>📅 FECHA DEL SISTEMA :</span>
+        <span class="fecha-valor">${getFechaString()}</span>
+      </div>
+    `;
+    document.getElementById('contenidoDinamico').innerHTML = html;
+
+    const montoBase = document.getElementById('montoBaseInput');
+    const totalBase = document.getElementById('totalInputBasico');
+    const igvSpan = document.getElementById('igvMontoBasico');
+    const letrasSpan = document.getElementById('letrasBasico');
+
+    let lock = false;
+    const actualizarDesdeNeto = () => {
+      let neto = parseFloat(montoBase.value);
+      if (isNaN(neto)) neto = 0;
+      if (neto < 0) neto = 0;
+      let igv = neto * IGV;
+      let total = neto + igv;
+      igvSpan.innerText = formatSoles(igv);
+      totalBase.value = total.toFixed(2);
+      letrasSpan.innerText = numeroALetras(total);
+    };
+    const actualizarDesdeTotal = () => {
+      let total = parseFloat(totalBase.value);
+      if (isNaN(total)) total = 0;
+      if (total < 0) total = 0;
+      let neto = total / (1 + IGV);
+      let igv = total - neto;
+      neto = Math.round(neto * 100) / 100;
+      montoBase.value = neto.toFixed(2);
+      igvSpan.innerText = formatSoles(igv);
+      letrasSpan.innerText = numeroALetras(total);
+    };
+    montoBase.addEventListener('input', () => { if (!lock) { lock = true; actualizarDesdeNeto(); lock = false; } });
+    montoBase.addEventListener('blur', () => { let v = parseFloat(montoBase.value); if (isNaN(v)) v = 0; montoBase.value = v.toFixed(2); actualizarDesdeNeto(); });
+    totalBase.addEventListener('input', () => { if (!lock) { lock = true; actualizarDesdeTotal(); lock = false; } });
+    totalBase.addEventListener('blur', () => { let v = parseFloat(totalBase.value); if (isNaN(v)) v = 0; totalBase.value = v.toFixed(2); actualizarDesdeTotal(); });
+    actualizarDesdeNeto();
+  }
+
+  // ======================= AVANZADO: SIN MENSAJES, SOLO CASILLAS VACIAS =======================
+  let productosAvanzado = [];
+  let incluyenIgv = false;
+
+  // Crear producto con campos completamente vacíos
+  function crearProductoVacio() {
+    return {
+      descripcion: '',
+      cantidad: '',
+      precioUnitario: '',
+      subtotalBase: 0
+    };
+  }
+
+  function recalcularAvanzado() {
+    let totalBase = 0;
+    for (let p of productosAvanzado) {
+      let cant = (p.cantidad !== '' && p.cantidad !== undefined && !isNaN(parseFloat(p.cantidad))) ? parseFloat(p.cantidad) : 0;
+      let precioIngresado = (p.precioUnitario !== '' && p.precioUnitario !== undefined && !isNaN(parseFloat(p.precioUnitario))) ? parseFloat(p.precioUnitario) : 0;
+      
+      if (incluyenIgv) {
+        let precioNeto = precioIngresado / (1 + IGV);
+        p.subtotalBase = cant * precioNeto;
+        totalBase += p.subtotalBase;
+      } else {
+        p.subtotalBase = cant * precioIngresado;
+        totalBase += p.subtotalBase;
+      }
+    }
+    const igvTotal = totalBase * IGV;
+    const totalFinal = totalBase + igvTotal;
+    return { totalBase, igvTotal, totalFinal };
+  }
+
+  function actualizarUIavanzado() {
+    const { totalBase, igvTotal, totalFinal } = recalcularAvanzado();
+    const netoElem = document.getElementById('avMontoNetoVal');
+    const igvElem = document.getElementById('avIgvVal');
+    const totalElem = document.getElementById('avTotalVal');
+    const letrasElem = document.getElementById('avLetrasTexto');
+    if (netoElem) netoElem.innerText = formatSoles(totalBase);
+    if (igvElem) igvElem.innerText = formatSoles(igvTotal);
+    if (totalElem) totalElem.innerText = formatSoles(totalFinal);
+    if (letrasElem) letrasElem.innerText = numeroALetras(totalFinal);
+
+    for (let i = 0; i < productosAvanzado.length; i++) {
+      const subtotalSpan = document.getElementById(`subtotalFila-${i}`);
+      if (subtotalSpan) {
+        let subtotalConIgv = productosAvanzado[i].subtotalBase * (1 + IGV);
+        subtotalSpan.innerText = formatSoles(subtotalConIgv);
+      }
+    }
+  }
+
+  function renderAvanzado() {
+    // Siempre mostrar las filas de productos, incluso si está vacío se muestra una fila por defecto para que el usuario vea casillas
+    // Pero como queremos casillas desde el inicio, aseguramos que haya al menos una fila vacía al renderizar si no hay productos.
+    if (productosAvanzado.length === 0) {
+      productosAvanzado = [crearProductoVacio()];
+    }
+    
+    let filasHtml = '';
+    productosAvanzado.forEach((prod, idx) => {
+      const descValue = prod.descripcion || '';
+      const cantValue = (prod.cantidad !== undefined && prod.cantidad !== '') ? prod.cantidad : '';
+      const precioValue = (prod.precioUnitario !== undefined && prod.precioUnitario !== '') ? prod.precioUnitario : '';
+      
+      filasHtml += `
+        <div class="producto-fila" data-idx="${idx}">
+          <input type="text" class="desc-input" data-idx="${idx}" value="${escapeHtml(descValue)}" placeholder="Descripción" autocomplete="off">
+          <input type="number" class="cantidad-input" data-idx="${idx}" value="${cantValue}" step="any" placeholder="Unid." autocomplete="off">
+          <input type="number" class="precio-input" data-idx="${idx}" value="${precioValue}" step="any" placeholder="P.Unidad" autocomplete="off">
+          <div class="subtotal-text" id="subtotalFila-${idx}">${formatSoles(0)}</div>
+          <button class="btn-icono btn-eliminar" data-eliminar="${idx}">✖</button>
+        </div>
+      `;
+    });
+
+    const { totalBase, igvTotal, totalFinal } = recalcularAvanzado();
+    
+    const htmlCompleto = `
+      <div class="panel-avanzado">
+        <div class="cabecera-productos">
+          <span>📝 Descripción</span><span>📦 Unid.</span><span>💰 P.Unidad</span><span>🧾 Sub.Total</span><span></span>
+        </div>
+        <div id="listaProductosAvanzado">
+          ${filasHtml}
+        </div>
+        <div style="display:flex; justify-content: flex-end; margin: 16px 0 8px;">
+          <button class="btn-icono btn-agregar" id="btnAgregarAvanzado">➕ Agregar producto</button>
+        </div>
+        <div class="check-igv-line">
+          <input type="checkbox" id="checkPrecioIncluyeIgv" ${incluyenIgv ? 'checked' : ''}>
+          <label>✅ Precios unitarios ya incluyen IGV</label>
+          <span style="font-size:11px; color:#587b9c;">(Al activar, se calcula Neto automático)</span>
+        </div>
+        <div class="resumen-tarjetas-avanzado">
+          <div class="resumen-linea"><span>💰 Monto Base (Neto):</span><span id="avMontoNetoVal">${formatSoles(totalBase)}</span></div>
+          <div class="resumen-linea"><span>📊 IGV 18%:</span><span id="avIgvVal">${formatSoles(igvTotal)}</span></div>
+          <div class="resumen-linea resumen-total"><span>🏷️ TOTAL:</span><span id="avTotalVal">${formatSoles(totalFinal)}</span></div>
+        </div>
+        <div class="bloque-letras">
+          <div class="letras-etiqueta">SON :</div>
+          <div class="letras-texto" id="avLetrasTexto">${numeroALetras(totalFinal)}</div>
+        </div>
+        <div class="fecha-linea">
+          <span>📅 FECHA DEL SISTEMA :</span>
+          <span class="fecha-valor">${getFechaString()}</span>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('contenidoDinamico').innerHTML = htmlCompleto;
+
+    // Evento agregar producto
+    document.getElementById('btnAgregarAvanzado')?.addEventListener('click', () => {
+      productosAvanzado.push(crearProductoVacio());
+      renderAvanzado();
+    });
+
+    const check = document.getElementById('checkPrecioIncluyeIgv');
+    if (check) {
+      check.addEventListener('change', (e) => {
+        incluyenIgv = e.target.checked;
+        // Recalcular todos los subtotales base
+        for (let p of productosAvanzado) {
+          let cant = (p.cantidad !== '' && !isNaN(parseFloat(p.cantidad))) ? parseFloat(p.cantidad) : 0;
+          let precio = (p.precioUnitario !== '' && !isNaN(parseFloat(p.precioUnitario))) ? parseFloat(p.precioUnitario) : 0;
+          if (incluyenIgv) {
+            p.subtotalBase = cant * (precio / (1 + IGV));
+          } else {
+            p.subtotalBase = cant * precio;
+          }
+        }
+        actualizarUIavanzado();
+      });
+    }
+
+    // Eventos para inputs
+    document.querySelectorAll('.desc-input').forEach(inp => {
+      inp.addEventListener('change', (e) => {
+        let idx = parseInt(e.target.dataset.idx);
+        if (!isNaN(idx) && productosAvanzado[idx]) {
+          productosAvanzado[idx].descripcion = e.target.value;
+        }
+      });
+    });
+    
+    document.querySelectorAll('.cantidad-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        let idx = parseInt(e.target.dataset.idx);
+        if (!isNaN(idx) && productosAvanzado[idx]) {
+          let val = e.target.value;
+          productosAvanzado[idx].cantidad = val;
+          let cantNum = (val !== '' && !isNaN(parseFloat(val))) ? parseFloat(val) : 0;
+          let precioNum = (productosAvanzado[idx].precioUnitario !== '' && !isNaN(parseFloat(productosAvanzado[idx].precioUnitario))) ? parseFloat(productosAvanzado[idx].precioUnitario) : 0;
+          if (incluyenIgv) {
+            productosAvanzado[idx].subtotalBase = cantNum * (precioNum / (1 + IGV));
+          } else {
+            productosAvanzado[idx].subtotalBase = cantNum * precioNum;
+          }
+          actualizarUIavanzado();
+        }
+      });
+    });
+    
+    document.querySelectorAll('.precio-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        let idx = parseInt(e.target.dataset.idx);
+        if (!isNaN(idx) && productosAvanzado[idx]) {
+          let val = e.target.value;
+          productosAvanzado[idx].precioUnitario = val;
+          let cantNum = (productosAvanzado[idx].cantidad !== '' && !isNaN(parseFloat(productosAvanzado[idx].cantidad))) ? parseFloat(productosAvanzado[idx].cantidad) : 0;
+          let precioNum = (val !== '' && !isNaN(parseFloat(val))) ? parseFloat(val) : 0;
+          if (incluyenIgv) {
+            productosAvanzado[idx].subtotalBase = cantNum * (precioNum / (1 + IGV));
+          } else {
+            productosAvanzado[idx].subtotalBase = cantNum * precioNum;
+          }
+          actualizarUIavanzado();
+        }
+      });
+    });
+    
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        let idx = parseInt(btn.dataset.eliminar);
+        if (!isNaN(idx)) {
+          productosAvanzado.splice(idx, 1);
+          // Si después de eliminar queda vacío, agregamos una fila vacía para que siempre haya casillas
+          if (productosAvanzado.length === 0) {
+            productosAvanzado = [crearProductoVacio()];
+          }
+          renderAvanzado();
+        }
+      });
+    });
+    
+    actualizarUIavanzado();
+  }
+
+  function escapeHtml(str) {
+    if (str === undefined || str === null) return '';
+    return String(str).replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // Cambio de pestañas
+  const tabAv = document.getElementById('tabAvanzado');
+  const tabBas = document.getElementById('tabBasico');
+
+  tabBas.addEventListener('click', () => {
+    tabBas.classList.add('activo');
+    tabAv.classList.remove('activo');
+    renderBasico();
   });
   
-  tabBasico.addEventListener('click', () => {
-    tabBasico.classList.add('activo');
-    tabAvanzado.classList.remove('activo');
+  tabAv.addEventListener('click', () => {
+    tabAv.classList.add('activo');
+    tabBas.classList.remove('activo');
+    // Al entrar a avanzado, aseguramos que siempre haya una fila de producto vacía
+    if (productosAvanzado.length === 0) {
+      productosAvanzado = [crearProductoVacio()];
+    } else {
+      // Si ya hay productos, los mantenemos pero si están todos vacíos no hay problema
+    }
+    incluyenIgv = false;
+    renderAvanzado();
   });
 
-  // Asignar eventos
-  montoBaseInput.addEventListener('input', onBaseChange);
-  montoBaseInput.addEventListener('blur', formatearBase);
-  totalInput.addEventListener('input', onTotalChange);
-  totalInput.addEventListener('blur', formatearTotal);
-
-  // Inicializar valores como en la imagen
-  montoBaseInput.value = '17000.00';
-  totalInput.value = '20060.00';
-  actualizarDesdeBase();  // calcula IGV y letras
-  actualizarFecha();
+  // Inicializar en básico
+  renderBasico();
 </script>
 </body>
 </html>
