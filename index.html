@@ -653,4 +653,106 @@
           let precio = (p.precioUnitario !== '' && !isNaN(parseFloat(p.precioUnitario))) ? parseFloat(p.precioUnitario) : 0;
           if (incluyenIgv) {
             p.subtotalBase = cant * (precio / (1 + IGV));
-          } el
+          } else {
+            p.subtotalBase = cant * precio;
+          }
+        }
+        actualizarUIavanzado();
+      });
+    }
+
+    // Eventos para inputs
+    document.querySelectorAll('.desc-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        let idx = parseInt(e.target.dataset.idx);
+        if (!isNaN(idx) && productosAvanzado[idx]) {
+          productosAvanzado[idx].descripcion = e.target.value;
+        }
+      });
+    });
+    
+    document.querySelectorAll('.cantidad-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        let idx = parseInt(e.target.dataset.idx);
+        if (!isNaN(idx) && productosAvanzado[idx]) {
+          let val = e.target.value;
+          productosAvanzado[idx].cantidad = val;
+          let cantNum = (val !== '' && !isNaN(parseFloat(val))) ? parseFloat(val) : 0;
+          let precioNum = (productosAvanzado[idx].precioUnitario !== '' && !isNaN(parseFloat(productosAvanzado[idx].precioUnitario))) ? parseFloat(productosAvanzado[idx].precioUnitario) : 0;
+          if (incluyenIgv) {
+            productosAvanzado[idx].subtotalBase = cantNum * (precioNum / (1 + IGV));
+          } else {
+            productosAvanzado[idx].subtotalBase = cantNum * precioNum;
+          }
+          actualizarUIavanzado();
+        }
+      });
+    });
+    
+    document.querySelectorAll('.precio-input').forEach(inp => {
+      inp.addEventListener('input', (e) => {
+        let idx = parseInt(e.target.dataset.idx);
+        if (!isNaN(idx) && productosAvanzado[idx]) {
+          let val = e.target.value;
+          productosAvanzado[idx].precioUnitario = val;
+          let cantNum = (productosAvanzado[idx].cantidad !== '' && !isNaN(parseFloat(productosAvanzado[idx].cantidad))) ? parseFloat(productosAvanzado[idx].cantidad) : 0;
+          let precioNum = (val !== '' && !isNaN(parseFloat(val))) ? parseFloat(val) : 0;
+          if (incluyenIgv) {
+            productosAvanzado[idx].subtotalBase = cantNum * (precioNum / (1 + IGV));
+          } else {
+            productosAvanzado[idx].subtotalBase = cantNum * precioNum;
+          }
+          actualizarUIavanzado();
+        }
+      });
+    });
+    
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        let idx = parseInt(btn.dataset.eliminar);
+        if (!isNaN(idx)) {
+          productosAvanzado.splice(idx, 1);
+          if (productosAvanzado.length === 0) {
+            productosAvanzado = [crearProductoVacio()];
+          }
+          renderAvanzado();
+        }
+      });
+    });
+    
+    actualizarUIavanzado();
+  }
+
+  function escapeHtml(str) {
+    if (str === undefined || str === null) return '';
+    return String(str).replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // Cambio de pestañas
+  const tabAv = document.getElementById('tabAvanzado');
+  const tabBas = document.getElementById('tabBasico');
+
+  tabBas.addEventListener('click', () => {
+    tabBas.classList.add('activo');
+    tabAv.classList.remove('activo');
+    renderBasico();
+  });
+  
+  tabAv.addEventListener('click', () => {
+    tabAv.classList.add('activo');
+    tabBas.classList.remove('activo');
+    productosAvanzado = [crearProductoVacio()];
+    incluyenIgv = false;
+    renderAvanzado();
+  });
+
+  // Inicializar en básico con todo vacío
+  renderBasico();
+</script>
+</body>
+</html>
