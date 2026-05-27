@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Calculadora IGV Perú | NelAngel</title>
+  <title>Calculadora IGV Perú | Estilo Cuadrado</title>
   <style>
     * {
       margin: 0;
@@ -104,6 +104,22 @@
     .input-grande:focus {
       outline: none;
       border-color: #d93c3f;
+    }
+
+    .input-grande::placeholder {
+      color: #b9c3d0;
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+
+    /* Ocultar flechas de input number cuando está vacío */
+    .input-grande[type="number"] {
+      -moz-appearance: textfield;
+    }
+    .input-grande[type="number"]::-webkit-inner-spin-button,
+    .input-grande[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
 
     .tarjeta-resultado {
@@ -221,6 +237,21 @@
       text-align: left;
     }
 
+    .producto-fila input::placeholder {
+      color: #b9c3d0;
+      font-weight: 400;
+    }
+
+    /* Ocultar flechas en inputs number de productos */
+    .producto-fila input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    .producto-fila input[type="number"]::-webkit-inner-spin-button,
+    .producto-fila input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
     .subtotal-text {
       font-weight: 800;
       font-size: 0.9rem;
@@ -325,7 +356,7 @@
 <body>
 <div class="container">
   <div class="header">
-    <h1>CALCULADORA IGV PERÚ - NelAngel</h1>
+    <h1>CALCULADORA IGV PERÚ</h1>
     <div class="tabs">
       <button class="tab" id="tabAvanzado">Avanzado</button>
       <button class="tab activo" id="tabBasico">Básico</button>
@@ -403,7 +434,7 @@
   }
 
   function formatSoles(val) {
-    if (isNaN(val) || val === null) return 'S/ 0.00';
+    if (isNaN(val) || val === null || val === '') return 'S/ 0.00';
     return 'S/ ' + val.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
@@ -414,12 +445,12 @@
     return `${dias} de ${meses[ahora.getMonth()]} del ${ahora.getFullYear()}`;
   }
 
-  // ======================= PESTAÑA BÁSICA =======================
+  // ======================= PESTAÑA BÁSICA - SIN 0.00 EN CASILLAS =======================
   function renderBasico() {
     const html = `
       <div class="campo-grupo">
         <label>💰 MONTO NETO (base)</label>
-        <input type="number" id="montoBaseInput" class="input-grande" value="0.00" step="any">
+        <input type="number" id="montoBaseInput" class="input-grande" placeholder="" value="" step="any">
       </div>
       <div class="tarjeta-resultado igv-destacado">
         <span class="tarjeta-label">📊 IGV 18%</span>
@@ -427,7 +458,7 @@
       </div>
       <div class="campo-grupo">
         <label>🏷️ TOTAL (con IGV)</label>
-        <input type="number" id="totalInputBasico" class="input-grande" value="0.00" step="any">
+        <input type="number" id="totalInputBasico" class="input-grande" placeholder="" value="" step="any">
       </div>
       <div class="bloque-letras">
         <div class="letras-etiqueta">SON :</div>
@@ -446,9 +477,17 @@
     const letrasSpan = document.getElementById('letrasBasico');
 
     let lock = false;
+    
     const actualizarDesdeNeto = () => {
-      let neto = parseFloat(montoBase.value);
-      if (isNaN(neto)) neto = 0;
+      let netoVal = montoBase.value;
+      let neto = (netoVal !== null && netoVal !== '' && !isNaN(parseFloat(netoVal))) ? parseFloat(netoVal) : NaN;
+      
+      if (isNaN(neto)) {
+        igvSpan.innerText = formatSoles(0);
+        totalBase.value = '';
+        letrasSpan.innerText = numeroALetras(0);
+        return;
+      }
       if (neto < 0) neto = 0;
       let igv = neto * IGV;
       let total = neto + igv;
@@ -456,9 +495,17 @@
       totalBase.value = total.toFixed(2);
       letrasSpan.innerText = numeroALetras(total);
     };
+    
     const actualizarDesdeTotal = () => {
-      let total = parseFloat(totalBase.value);
-      if (isNaN(total)) total = 0;
+      let totalVal = totalBase.value;
+      let total = (totalVal !== null && totalVal !== '' && !isNaN(parseFloat(totalVal))) ? parseFloat(totalVal) : NaN;
+      
+      if (isNaN(total)) {
+        montoBase.value = '';
+        igvSpan.innerText = formatSoles(0);
+        letrasSpan.innerText = numeroALetras(0);
+        return;
+      }
       if (total < 0) total = 0;
       let neto = total / (1 + IGV);
       let igv = total - neto;
@@ -467,18 +514,21 @@
       igvSpan.innerText = formatSoles(igv);
       letrasSpan.innerText = numeroALetras(total);
     };
+    
     montoBase.addEventListener('input', () => { if (!lock) { lock = true; actualizarDesdeNeto(); lock = false; } });
-    montoBase.addEventListener('blur', () => { let v = parseFloat(montoBase.value); if (isNaN(v)) v = 0; montoBase.value = v.toFixed(2); actualizarDesdeNeto(); });
     totalBase.addEventListener('input', () => { if (!lock) { lock = true; actualizarDesdeTotal(); lock = false; } });
-    totalBase.addEventListener('blur', () => { let v = parseFloat(totalBase.value); if (isNaN(v)) v = 0; totalBase.value = v.toFixed(2); actualizarDesdeTotal(); });
-    actualizarDesdeNeto();
+    
+    // Valores iniciales vacíos
+    montoBase.value = '';
+    totalBase.value = '';
+    igvSpan.innerText = formatSoles(0);
+    letrasSpan.innerText = numeroALetras(0);
   }
 
-  // ======================= AVANZADO: SIN MENSAJES, SOLO CASILLAS VACIAS =======================
+  // ======================= AVANZADO: CASILLAS SIN 0.00 =======================
   let productosAvanzado = [];
   let incluyenIgv = false;
 
-  // Crear producto con campos completamente vacíos
   function crearProductoVacio() {
     return {
       descripcion: '',
@@ -529,8 +579,7 @@
   }
 
   function renderAvanzado() {
-    // Siempre mostrar las filas de productos, incluso si está vacío se muestra una fila por defecto para que el usuario vea casillas
-    // Pero como queremos casillas desde el inicio, aseguramos que haya al menos una fila vacía al renderizar si no hay productos.
+    // Aseguramos que siempre haya al menos una fila de producto vacía
     if (productosAvanzado.length === 0) {
       productosAvanzado = [crearProductoVacio()];
     }
@@ -538,6 +587,7 @@
     let filasHtml = '';
     productosAvanzado.forEach((prod, idx) => {
       const descValue = prod.descripcion || '';
+      // Valores vacíos, nunca mostramos 0
       const cantValue = (prod.cantidad !== undefined && prod.cantidad !== '') ? prod.cantidad : '';
       const precioValue = (prod.precioUnitario !== undefined && prod.precioUnitario !== '') ? prod.precioUnitario : '';
       
@@ -588,7 +638,7 @@
 
     document.getElementById('contenidoDinamico').innerHTML = htmlCompleto;
 
-    // Evento agregar producto
+    // Botón agregar producto
     document.getElementById('btnAgregarAvanzado')?.addEventListener('click', () => {
       productosAvanzado.push(crearProductoVacio());
       renderAvanzado();
@@ -598,118 +648,9 @@
     if (check) {
       check.addEventListener('change', (e) => {
         incluyenIgv = e.target.checked;
-        // Recalcular todos los subtotales base
         for (let p of productosAvanzado) {
           let cant = (p.cantidad !== '' && !isNaN(parseFloat(p.cantidad))) ? parseFloat(p.cantidad) : 0;
           let precio = (p.precioUnitario !== '' && !isNaN(parseFloat(p.precioUnitario))) ? parseFloat(p.precioUnitario) : 0;
           if (incluyenIgv) {
             p.subtotalBase = cant * (precio / (1 + IGV));
-          } else {
-            p.subtotalBase = cant * precio;
-          }
-        }
-        actualizarUIavanzado();
-      });
-    }
-
-    // Eventos para inputs
-    document.querySelectorAll('.desc-input').forEach(inp => {
-      inp.addEventListener('change', (e) => {
-        let idx = parseInt(e.target.dataset.idx);
-        if (!isNaN(idx) && productosAvanzado[idx]) {
-          productosAvanzado[idx].descripcion = e.target.value;
-        }
-      });
-    });
-    
-    document.querySelectorAll('.cantidad-input').forEach(inp => {
-      inp.addEventListener('input', (e) => {
-        let idx = parseInt(e.target.dataset.idx);
-        if (!isNaN(idx) && productosAvanzado[idx]) {
-          let val = e.target.value;
-          productosAvanzado[idx].cantidad = val;
-          let cantNum = (val !== '' && !isNaN(parseFloat(val))) ? parseFloat(val) : 0;
-          let precioNum = (productosAvanzado[idx].precioUnitario !== '' && !isNaN(parseFloat(productosAvanzado[idx].precioUnitario))) ? parseFloat(productosAvanzado[idx].precioUnitario) : 0;
-          if (incluyenIgv) {
-            productosAvanzado[idx].subtotalBase = cantNum * (precioNum / (1 + IGV));
-          } else {
-            productosAvanzado[idx].subtotalBase = cantNum * precioNum;
-          }
-          actualizarUIavanzado();
-        }
-      });
-    });
-    
-    document.querySelectorAll('.precio-input').forEach(inp => {
-      inp.addEventListener('input', (e) => {
-        let idx = parseInt(e.target.dataset.idx);
-        if (!isNaN(idx) && productosAvanzado[idx]) {
-          let val = e.target.value;
-          productosAvanzado[idx].precioUnitario = val;
-          let cantNum = (productosAvanzado[idx].cantidad !== '' && !isNaN(parseFloat(productosAvanzado[idx].cantidad))) ? parseFloat(productosAvanzado[idx].cantidad) : 0;
-          let precioNum = (val !== '' && !isNaN(parseFloat(val))) ? parseFloat(val) : 0;
-          if (incluyenIgv) {
-            productosAvanzado[idx].subtotalBase = cantNum * (precioNum / (1 + IGV));
-          } else {
-            productosAvanzado[idx].subtotalBase = cantNum * precioNum;
-          }
-          actualizarUIavanzado();
-        }
-      });
-    });
-    
-    document.querySelectorAll('.btn-eliminar').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        let idx = parseInt(btn.dataset.eliminar);
-        if (!isNaN(idx)) {
-          productosAvanzado.splice(idx, 1);
-          // Si después de eliminar queda vacío, agregamos una fila vacía para que siempre haya casillas
-          if (productosAvanzado.length === 0) {
-            productosAvanzado = [crearProductoVacio()];
-          }
-          renderAvanzado();
-        }
-      });
-    });
-    
-    actualizarUIavanzado();
-  }
-
-  function escapeHtml(str) {
-    if (str === undefined || str === null) return '';
-    return String(str).replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    });
-  }
-
-  // Cambio de pestañas
-  const tabAv = document.getElementById('tabAvanzado');
-  const tabBas = document.getElementById('tabBasico');
-
-  tabBas.addEventListener('click', () => {
-    tabBas.classList.add('activo');
-    tabAv.classList.remove('activo');
-    renderBasico();
-  });
-  
-  tabAv.addEventListener('click', () => {
-    tabAv.classList.add('activo');
-    tabBas.classList.remove('activo');
-    // Al entrar a avanzado, aseguramos que siempre haya una fila de producto vacía
-    if (productosAvanzado.length === 0) {
-      productosAvanzado = [crearProductoVacio()];
-    } else {
-      // Si ya hay productos, los mantenemos pero si están todos vacíos no hay problema
-    }
-    incluyenIgv = false;
-    renderAvanzado();
-  });
-
-  // Inicializar en básico
-  renderBasico();
-</script>
-</body>
-</html>
+          } el
